@@ -16,7 +16,7 @@ services:
   mysql:
     platform: linux/amd64
     build:
-      dockerfile: Docker/Dockerfile-mysql
+      dockerfile: docker/dockerfile-mysql
     ports:
       - '3306:3306'
     environment:
@@ -44,8 +44,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - ./Docker/rabbitmq/rabbitmq_data/:/var/lib/rabbitmq/mnesia/:cached
-      - ./Docker/rabbitmq/rabbitmq_log/:/var/log/rabbitmq/:cached
+      - ./docker/rabbitmq/rabbitmq_data/:/var/lib/rabbitmq/mnesia/:cached
+      - ./docker/rabbitmq/rabbitmq_log/:/var/log/rabbitmq/:cached
     user: rabbitmq
     environment:
       TZ: Europe/Warsaw
