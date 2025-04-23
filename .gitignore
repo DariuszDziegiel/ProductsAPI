@@ -1,5 +1,5 @@
-/Docker/rabbitmq/
-/Docker/mysql/data/
+/docker/rabbitmq/
+/Docker/mysql/data
 /supervisord.log
 /supervisord.pid
 /.idea
