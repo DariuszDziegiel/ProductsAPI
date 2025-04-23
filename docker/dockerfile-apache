@@ -1,4 +1,4 @@
-FROM ubuntu/apache2:latest
+FROM ubuntu/apache2:2.4-24.04_edge
 
 ENV TZ="Europe/Warsaw"
 
@@ -23,11 +23,9 @@ RUN apt install -y php8.4-amqp php8.4-apcu
 RUN apt install -y mysql-client
 
 RUN a2enmod rewrite expires headers
+RUN a2enmod proxy proxy_fcgi proxy_http setenvif
 RUN a2enconf php8.4-fpm
 
-
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-# Set PHP timezone for fpm % CLI
 RUN printf '[Date]\ndate.timezone="%s"\n', $TZ > /etc/php/8.4/fpm/conf.d/timezone.ini
 RUN printf '[Date]\ndate.timezone="%s"\n', $TZ > /etc/php/8.4/cli/conf.d/timezone.ini
 
