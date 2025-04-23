@@ -12,6 +12,10 @@ services:
       - ./docker/apache/supervisor:/etc/supervisor
     ports:
       - '80:80'
+    depends_on:
+      - mysql
+      - rabbitmq
+      - mailcatcher
 
   mysql:
     platform: linux/amd64
@@ -20,12 +24,13 @@ services:
     ports:
       - '3306:3306'
     environment:
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: products
+      MYSQL_ROOT_PASSWORD: passwd
       MYSQL_DATABASE: products
+      MYSQL_USER: products
+      MYSQL_PASSWORD: products
       TZ: Europe/Warsaw
     volumes:
-      - ./Docker/mysql/data:/var/lib/mysql:rw
+      - mysql_data:/var/lib/mysql:rw
 
   mailcatcher:
     platform: linux/amd64
@@ -37,21 +42,26 @@ services:
 
   rabbitmq:
     platform: linux/amd64
-    image: rabbitmq:3.7-management
+    image: rabbitmq:4.1.0-management
     container_name: rabbitmq.local
-    hostname: rabbitmq.local
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - ./docker/rabbitmq/rabbitmq_data/:/var/lib/rabbitmq/mnesia/:cached
-      - ./docker/rabbitmq/rabbitmq_log/:/var/log/rabbitmq/:cached
+      - rabbitmq_data:/var/lib/rabbitmq:cached
+      - rabbitmq_log:/var/log/rabbitmq:cached
     user: rabbitmq
     environment:
       TZ: Europe/Warsaw
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: rabbitmq
       RABBITMQ_DEFAULT_VHOST: /
+
 networks:
   products-api:
     driver: bridge
+
+volumes:
+  mysql_data:
+  rabbitmq_data:
+  rabbitmq_log:
