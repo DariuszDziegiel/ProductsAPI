@@ -14,6 +14,7 @@
         "symfony/amqp-messenger": "7.2.*",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "7.2.*",
+        "symfony/doctrine-messenger": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.2.*",

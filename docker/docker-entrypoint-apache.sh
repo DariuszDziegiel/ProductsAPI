@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chmod -R 0775 var/
+chmod -R 0777 var/
 
 if [ ! -d vendor ]; then
     echo "--------------------------------------------------------"
@@ -22,6 +22,9 @@ echo "------Running doctrine migrations-------------"
 bin/console doctrine:migration:migrate -n -vv
 echo "--------------------------------------------------------"
 
+echo "------Messenger transports setup-------------"
+bin/console messenger:setup-transports failed
+bin/console messenger:setup-transports async
 
 echo "--------------------------------------------------------"
 echo "Start supervisord"
