@@ -1,0 +1,57 @@
+services:
+  apache:
+    build:
+      dockerfile: docker/dockerfile-apache
+    environment:
+      TZ: Europe/Warsaw
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - ./:/var/www/products-api.local
+      - ./docker/apache/vhost:/etc/apache2/sites-enabled
+      - ./docker/apache/supervisor:/etc/supervisor
+    ports:
+      - '80:80'
+
+  mysql:
+    platform: linux/amd64
+    build:
+      dockerfile: Docker/Dockerfile-mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: products
+      MYSQL_DATABASE: products
+      TZ: Europe/Warsaw
+    volumes:
+      - ./Docker/mysql/data:/var/lib/mysql:rw
+
+  mailcatcher:
+    platform: linux/amd64
+    image: dockage/mailcatcher
+    ports:
+      - 1080:1080
+    environment:
+      TZ: Europe/Warsaw
+
+  rabbitmq:
+    platform: linux/amd64
+    image: rabbitmq:3.7-management
+    container_name: rabbitmq.local
+    hostname: rabbitmq.local
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./Docker/rabbitmq/rabbitmq_data/:/var/lib/rabbitmq/mnesia/:cached
+      - ./Docker/rabbitmq/rabbitmq_log/:/var/log/rabbitmq/:cached
+    user: rabbitmq
+    environment:
+      TZ: Europe/Warsaw
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+      RABBITMQ_DEFAULT_VHOST: /
+networks:
+  products-api:
+    driver: bridge

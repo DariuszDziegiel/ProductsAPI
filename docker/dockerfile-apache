@@ -1,0 +1,47 @@
+FROM ubuntu/apache2:latest
+
+ENV TZ="Europe/Warsaw"
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+RUN echo $TZ > /etc/timezone
+
+RUN apt update && apt install -y software-properties-common
+RUN apt install -y iputils-ping
+RUN apt install -y telnet
+RUN apt install -y curl
+RUN apt-get install -y bash
+RUN add-apt-repository ppa:ondrej/php
+RUN apt update
+RUN apt install -y supervisor
+
+
+RUN apt install -y php8.4-fpm php8.4-cli php8.4-mysql php8.4-mbstring php8.4-curl
+RUN apt install -y php8.4-bcmath
+RUN apt install -y php8.4-iconv php8.4-intl php8.4-pdo
+RUN apt install -y libapache2-mod-fcgid
+RUN apt install -y php8.4-amqp php8.4-apcu
+RUN apt install -y mysql-client
+
+RUN a2enmod rewrite expires headers
+RUN a2enconf php8.4-fpm
+
+
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+# Set PHP timezone for fpm % CLI
+RUN printf '[Date]\ndate.timezone="%s"\n', $TZ > /etc/php/8.4/fpm/conf.d/timezone.ini
+RUN printf '[Date]\ndate.timezone="%s"\n', $TZ > /etc/php/8.4/cli/conf.d/timezone.ini
+
+
+# Install composer latest version
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN php -r "unlink('composer-setup.php');"
+
+WORKDIR /var/www/products-api.local
+
+EXPOSE 80
+
+RUN service apache2 restart
+
+COPY docker/docker-entrypoint-apache.sh /
+ENTRYPOINT ["sh", "/docker-entrypoint-apache.sh"]
