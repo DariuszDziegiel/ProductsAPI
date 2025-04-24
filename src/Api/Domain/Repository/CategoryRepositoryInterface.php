@@ -9,4 +9,5 @@ use Api\Domain\Entity\Category;
 interface CategoryRepositoryInterface
 {
     public function save(Category $category): void;
+    public function findOneByCode(string $code): ?Category;
 }
