@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Api\Application\UseCase\ProductAdd;
 
+use Api\Application\Exception\Product\ProductWithGivenIdAlreadyExistsException;
 use Api\Domain\Entity\Product;
 use Api\Domain\Event\ProductSavedEvent;
 use Api\Domain\Repository\ProductRepositoryInterface;
@@ -23,6 +24,10 @@ class ProductAddCommandHandler
 
     public function __invoke(ProductAddCommand $command): void
     {
+        if ($this->productRepository->findById($command->id)) {
+            throw new ProductWithGivenIdAlreadyExistsException('Product with given id already exists');
+        }
+
         $product = new Product(
             $command->id,
             $command->title,
