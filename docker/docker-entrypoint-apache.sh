@@ -1,6 +1,7 @@
 #!/bin/bash
 
-chmod -R 0777 var/
+chmod -R 775 var/
+chown -R www-data:www-data var/
 
 if [ ! -d vendor ]; then
     echo "--------------------------------------------------------"
