@@ -8,11 +8,13 @@ use Api\Domain\Event\ProductSavedEvent;
 use Notification\Domain\ProductSavedNotifierInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[Autoconfigure(tags: ['product.saved.event.notifier'])]
 readonly class ProductSavedFileLogNotifier implements ProductSavedNotifierInterface
 {
     public function __construct(
+        #[Autowire(service: 'monolog.logger.product.saved.event')]
         private LoggerInterface $logger
     ) {}
 
