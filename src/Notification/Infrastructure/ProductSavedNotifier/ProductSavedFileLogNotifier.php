@@ -22,6 +22,8 @@ readonly class ProductSavedFileLogNotifier implements ProductSavedNotifierInterf
     {
         $product = $productSavedEvent->product;
 
-        $this->logger->info("Saved product: ({$product->id()})");
+        $this
+            ->logger
+            ->info("Saved product: (id: {$product->id()}, title: {$product->title()}, price: {$product->price()->value()})");
     }
 }
