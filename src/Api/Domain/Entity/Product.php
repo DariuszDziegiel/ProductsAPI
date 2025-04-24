@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Api\Domain\Entity;
 
 use Api\Domain\Entity\Traits\TimestampableTrait;
+use Api\Domain\ValueObject\Money;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embedded;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
@@ -28,15 +30,13 @@ class Product
     #[Assert\NotBlank]
     private string $title;
 
-    #[Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Assert\PositiveOrZero()]
-    #[Assert\NotBlank]
-    private string $price;
+    #[Embedded(class: Money::class)]
+    private Money $price;
 
     public function __construct(
         string $id,
         string $title,
-        string $price
+        Money $price
     ) {
         $this->id = $id;
         $this->title = $title;
