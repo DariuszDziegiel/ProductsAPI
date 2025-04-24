@@ -7,6 +7,7 @@ namespace Api\Interface\Controller\Product;
 use Api\Application\UseCase\ProductAdd\ProductAddCommand;
 use Api\Interface\RequestDTO\ProductAddRequestDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -19,7 +20,7 @@ use Symfony\Component\Uid\Uuid;
 class ProductAddController extends AbstractController
 {
     public function __construct(
-        private readonly MessageBusInterface $commandBus
+        private readonly MessageBusInterface $commandBus,
     ) {}
 
     #[Route(
@@ -28,9 +29,10 @@ class ProductAddController extends AbstractController
     )]
     public function __invoke(
         #[MapRequestPayload] ProductAddRequestDTO $productAddRequestDTO
-    ): JsonResponse {
+    ): JsonResponse
+    {
         try {
-            $id =  $productAddRequestDTO->id ?? Uuid::v4()->toString();
+            $id =  $productAddRequestDTO->id ?? Uuid::v7()->toString();
 
             $this->commandBus->dispatch(
                 new ProductAddCommand(
@@ -39,21 +41,17 @@ class ProductAddController extends AbstractController
                     $productAddRequestDTO->price
                 )
             );
+
             $response = new JsonResponse([
                 'message' => 'Product created successfully'
             ], Response::HTTP_CREATED);
-            $response->headers->set('location', "/api/products/{$id}");
+            $response->headers->set('Location', "/api/products/{$id}");
 
             return $response;
-        } catch (ValidationFailedException) {
+        } catch (ValidationFailedException | HandlerFailedException $e) {
 
             return $this->json([
-                'message' => 'Validation failed'
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        } catch (HandlerFailedException $e) {
-
-            return $this->json([
-                'message' => $e->getPrevious()?->getMessage()
+                'message' => $e->getPrevious()?->getMessage() ?? 'Validation failed'
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\Throwable $e) {
 
