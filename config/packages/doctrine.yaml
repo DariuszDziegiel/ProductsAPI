@@ -13,11 +13,11 @@ doctrine:
             Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         auto_mapping: true
         mappings:
-            ApiEntities:
+            ApiDomain:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Api/Domain/Entity'
-                prefix: 'Api\Domain\Entity'
+                dir: '%kernel.project_dir%/src/Api/Domain'
+                prefix: 'Api\Domain'
                 alias: ApiDomain
         controller_resolver:
             auto_mapping: false
