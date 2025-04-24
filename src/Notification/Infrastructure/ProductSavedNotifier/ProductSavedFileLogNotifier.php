@@ -21,9 +21,19 @@ readonly class ProductSavedFileLogNotifier implements ProductSavedNotifierInterf
     public function notify(ProductSavedEvent $productSavedEvent): void
     {
         $product = $productSavedEvent->product;
+        $productDateUpdate = $product->updatedAt()
+            ? $product->updatedAt()->format('Y-m-d H:i:s')
+            : '---'
+        ;
 
         $this
             ->logger
-            ->info("Saved product: (id: {$product->id()}, title: {$product->title()}, price: {$product->price()->value()})");
+            ->info('Product saved', [
+                'id'      => $product->id(),
+                'title'   => $product->title(),
+                'price'   => $product->price()->value(),
+                'date_creation' => $product->createdAt()->format('Y-m-d H:i:s'),
+                'date_update'   => $productDateUpdate
+            ]);
     }
 }
