@@ -1,7 +1,15 @@
 monolog:
     channels:
-        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - deprecation
+        - product.saved.event
 
+
+    handlers:
+        product.saved.event:
+            type: stream
+            path: '%kernel.logs_dir%/product.saved.event.log'
+            level: info
+            channels: [ product.saved.event ]
 when@dev:
     monolog:
         handlers:
