@@ -20,4 +20,8 @@ readonly class DoctrineProductRepository implements ProductRepositoryInterface
         $this->entityManager->flush();
     }
 
+    public function findById(string $id): ?Product
+    {
+        return $this->entityManager->find(Product::class, $id);
+    }
 }
