@@ -6,6 +6,7 @@ namespace Api\Application\UseCase\ProductAdd;
 
 use Api\Domain\Entity\Product;
 use Api\Domain\Repository\ProductRepositoryInterface;
+use Api\Domain\ValueObject\Money;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler('command.bus')]
@@ -21,7 +22,7 @@ class ProductAddCommandHandler
             new Product(
                 $command->id,
                 $command->title,
-                $command->price
+                Money::createFromPrice($command->price)
             )
         );
     }
