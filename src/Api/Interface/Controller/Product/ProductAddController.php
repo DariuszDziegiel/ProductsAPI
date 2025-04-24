@@ -38,7 +38,8 @@ class ProductAddController extends AbstractController
                 new ProductAddCommand(
                     $id,
                     $productAddRequestDTO->title,
-                    $productAddRequestDTO->price
+                    $productAddRequestDTO->price,
+                    $productAddRequestDTO->categories
                 )
             );
 
