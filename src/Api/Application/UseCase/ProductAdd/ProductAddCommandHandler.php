@@ -13,18 +13,18 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class ProductAddCommandHandler
 {
     public function __construct(
-        private ProductRepositoryInterface $productRepository
+        private readonly ProductRepositoryInterface $productRepository,
     ) {}
 
     public function __invoke(ProductAddCommand $command): void
     {
-        $this->productRepository->save(
-            new Product(
-                $command->id,
-                $command->title,
-                Money::createFromPrice($command->price)
-            )
+        $product = new Product(
+            $command->id,
+            $command->title,
+            Money::createFromPrice($command->price)
         );
+
+        $this->productRepository->save($product);
     }
 
 }
