@@ -21,7 +21,7 @@ class ApiHttpExceptionListener
 
         if ($e instanceof UnprocessableEntityHttpException) {
             $event->setResponse(new JsonResponse([
-                'message' => 'Request payload validation failed - ' . $e->getMessage()
+                'message' => 'Request payload validation failed - ' . $e->getPrevious()?->getMessage() ?? $e->getMessage()
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
             return;
         }
