@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Api\Interface\Controller\Product;
 
+use Api\Application\Exception\Product\ProductWithGivenIdAlreadyExistsException;
 use Api\Application\UseCase\ProductAdd\ProductAddCommand;
 use Api\Interface\RequestDTO\ProductAddRequestDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -32,7 +32,7 @@ class ProductAddController extends AbstractController
     ): JsonResponse
     {
         try {
-            $id =  $productAddRequestDTO->id ?? Uuid::v7()->toString();
+            $id = $productAddRequestDTO->id ?? Uuid::v7()->toString();
 
             $this->commandBus->dispatch(
                 new ProductAddCommand(
@@ -42,22 +42,52 @@ class ProductAddController extends AbstractController
                 )
             );
 
-            $response = new JsonResponse([
-                'message' => 'Product created successfully'
-            ], Response::HTTP_CREATED);
-            $response->headers->set('Location', "/api/products/{$id}");
-
-            return $response;
-        } catch (ValidationFailedException | HandlerFailedException $e) {
-
-            return $this->json([
-                'message' => $e->getPrevious()?->getMessage() ?? 'Validation failed'
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->buildCreatedResponse($id);
+        } catch (ValidationFailedException $e) {
+            return $this->buildValidationErrorResponse($e);
+        } catch(HandlerFailedException $e) {
+            return $this->handleHandlerFailedException($e);
         } catch (\Throwable $e) {
-
             return $this->json([
-                'message' => $e->getMessage()
+                'message' => 'Unexpected error:' . $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private function buildCreatedResponse(string $id): JsonResponse
+    {
+        $response = new JsonResponse([
+            'message' => 'Product created successfully'
+        ], Response::HTTP_CREATED);
+
+        $response->headers->set('Location', "/api/products/{$id}");
+
+        return $response;
+    }
+
+    private function buildValidationErrorResponse(ValidationFailedException $e): JsonResponse
+    {
+        $violations = iterator_to_array($e->getViolations());
+        $messages = array_map(fn($v) => $v->getMessage(), $violations);
+
+        return $this->json([
+            'message' => 'Validation failed: ' . implode(', ', $messages)
+        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    private function handleHandlerFailedException(HandlerFailedException $e): JsonResponse
+    {
+        foreach ($e->getWrappedExceptions() as $wrappedException) {
+            if ($wrappedException instanceof ProductWithGivenIdAlreadyExistsException) {
+
+                return $this->json([
+                    'message' => 'Product already exists'
+                ], Response::HTTP_CONFLICT);
+            }
+        }
+
+        return $this->json([
+            'message' => 'Unexpected exception: ' . $e->getMessage()
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
