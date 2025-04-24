@@ -48,4 +48,13 @@ class Product
         return $this->id;
     }
 
+    public function title(): string
+    {
+        return $this->title;
+    }
+
+    public function price(): Money
+    {
+        return $this->price;
+    }
 }
