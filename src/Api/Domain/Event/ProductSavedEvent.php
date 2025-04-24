@@ -10,6 +10,7 @@ use Symfony\Component\Messenger\Attribute\AsMessage;
 #[AsMessage('async')]
 readonly class ProductSavedEvent
 {
+    //@TODO: Use DTO instead domain entity! Entity used for simplify
     public function __construct(
         public Product $product
     ) {}

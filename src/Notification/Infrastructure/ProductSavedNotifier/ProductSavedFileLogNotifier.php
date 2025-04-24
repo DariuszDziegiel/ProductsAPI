@@ -32,6 +32,7 @@ readonly class ProductSavedFileLogNotifier implements ProductSavedNotifierInterf
                 'id'      => $product->id(),
                 'title'   => $product->title(),
                 'price'   => $product->price()->value(),
+                'categories' => $product->categoriesCodes(),
                 'date_creation' => $product->createdAt()->format('Y-m-d H:i:s'),
                 'date_update'   => $productDateUpdate
             ]);

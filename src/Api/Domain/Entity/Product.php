@@ -90,4 +90,13 @@ class Product
     {
         return $this->price;
     }
+
+    public function categoriesCodes(): array
+    {
+        return array_map(
+            fn($category) => $category->code(),
+            $this->categories->toArray()
+        );
+    }
+
 }
