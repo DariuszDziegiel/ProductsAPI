@@ -1,11 +1,6 @@
-api_product_controllers:
+api_controllers:
     resource:
-        path: ../src/Api/Interface/Controller/Product/
-        namespace: Api\Interface\Controller\Product
+        path: ../src/Api/Interface/Controller/
+        namespace: Api\Interface\Controller
     type: attribute
-
-api_category_controllers:
-    resource:
-        path: ../src/Api/Interface/Controller/Category/
-        namespace: Api\Interface\Controller\Category
-    type: attribute
+    prefix: '/api'
