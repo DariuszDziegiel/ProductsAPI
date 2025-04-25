@@ -41,7 +41,9 @@ class ProductListController extends AbstractController
             $handled = $envelope->last(HandledStamp::class);
             $products = $handled->getResult();
 
-            return $this->json($products);
+            return $this->json([
+                'data' => $products
+            ], Response::HTTP_OK);
         } catch (\Throwable $e) {
             return $this->json([
                 'message' => 'Unexpected error:' . $e->getMessage()
