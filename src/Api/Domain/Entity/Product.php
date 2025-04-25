@@ -91,7 +91,6 @@ class Product
         return $this;
     }
 
-
     public function price(): Money
     {
         return $this->price;
@@ -119,5 +118,4 @@ class Product
             throw new ProductWithoutCategoriesException();
         }
     }
-
 }
