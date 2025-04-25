@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Api\Application\UseCase\ProductGet;
 
-use Api\Application\Exception\Product\ProductWithGivenIdAlreadyExistsException;
 use Api\Application\Exception\Product\ProductWithGivenIdNotExistsException;
+use Api\Application\UseCase\ProductGet\DTO\ProductGetDTO;
 use Api\Domain\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -16,16 +16,22 @@ class ProductGetQueryHandler
         private readonly ProductRepositoryInterface $productRepository
     ) {}
 
-    public function __invoke(ProductGetQuery $productGetQuery)
+    public function __invoke(ProductGetQuery $productGetQuery): ProductGetDTO
     {
-        if (!$this->productRepository->findById($productGetQuery->id)) {
+        $product = $this->productRepository->findById($productGetQuery->id);
+
+        if (!$product) {
             throw new ProductWithGivenIdNotExistsException();
         }
 
-        // TODO: Implement __invoke() method.
-        return [
-            'title' => 'test1'
-        ];
+        return new ProductGetDTO(
+            $product->id(),
+            $product->title(),
+            $product->price()->value(),
+            $product->categoriesCodes(),
+            $product->createdAt()->format('Y-m-d H:i:s'),
+            $product->updatedAt()?->format('Y-m-d H:i:s')
+        );
     }
 
 }

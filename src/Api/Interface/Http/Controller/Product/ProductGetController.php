@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Api\Interface\Http\Controller\Product;
 
+use Api\Application\UseCase\ProductGet\DTO\ProductGetDTO;
 use Api\Application\UseCase\ProductGet\ProductGetQuery;
 use Api\Interface\Http\Controller\Product\Trait\ProductGetExceptionsHandlingTrait;
 use Api\Interface\Http\Controller\Product\Trait\ValidationErrorHandlingTrait;
@@ -38,6 +39,7 @@ class ProductGetController extends AbstractController
                 new ProductGetQuery($id)
             );
             $handled = $envelope->last(HandledStamp::class);
+            /** @var ProductGetDTO $product */
             $product = $handled->getResult();
 
             return $this->json($product);
