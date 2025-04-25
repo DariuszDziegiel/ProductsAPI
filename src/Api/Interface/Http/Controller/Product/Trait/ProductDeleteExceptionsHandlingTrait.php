@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 trait ProductDeleteExceptionsHandlingTrait
 {
-    private function handleHandlerFailedException1(HandlerFailedException $e): Response
+    private function handleHandlerFailedException(HandlerFailedException $e): Response
     {
         foreach ($e->getWrappedExceptions() as $wrappedException) {
             if ($wrappedException instanceof ProductWithGivenIdNotExistsException) {

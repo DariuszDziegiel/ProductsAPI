@@ -37,7 +37,7 @@ class ProductDeleteController extends AbstractController
                 Response::HTTP_NO_CONTENT
             );
         } catch (HandlerFailedException $e) {
-            return $this->handleHandlerFailedException1($e);
+            return $this->handleHandlerFailedException($e);
         } catch (\Throwable $e) {
             return $this->json([
                 'message' => 'Unexpected error:' . $e->getMessage()
