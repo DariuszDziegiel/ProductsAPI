@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Api\Domain\Entity;
 
 use Api\Domain\Entity\Traits\TimestampableTrait;
+use Api\Domain\Exception\Category\CategoryCodeTooLongException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -41,27 +42,13 @@ class Category
         string $id,
         string $code,
     ) {
+        if (mb_strlen($code) > 10) {
+            throw new CategoryCodeTooLongException();
+        }
+
         $this->id = $id;
         $this->code = $code;
         $this->products = new ArrayCollection();
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->addCategory($this);
-        }
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            $this->removeProduct($product);
-        }
-
-        return $this;
     }
 
     public function code(): string
