@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Persistence\Doctrine;
 
+use Api\Domain\Entity\Category;
 use Api\Domain\Entity\Product;
 use Api\Domain\Repository\ProductRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,4 +31,18 @@ readonly class DoctrineProductRepository implements ProductRepositoryInterface
         $this->entityManager->remove($product);
         $this->entityManager->flush();
     }
+
+    public function findAll(int $limit = 25, int $page = 0): array
+    {
+        //@TODO: implement pagination for performance
+        return $this->entityManager
+            ->createQueryBuilder()
+            ->select('p, c')
+            ->from(Product::class, 'p')
+            ->leftJoin('p.categories', 'c')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }
