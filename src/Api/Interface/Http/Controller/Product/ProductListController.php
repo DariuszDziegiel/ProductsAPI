@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Api\Interface\Controller\Product;
+namespace Api\Interface\Http\Controller\Product;
 
 use Api\Application\UseCase\ProductsList\ProductsListQuery;
-use Api\Application\UseCase\ProductsList\ProductsListQueryHandler;
-use Api\Interface\RequestDTO\ProductsListQueryDTO;
+use Api\Interface\Http\RequestDTO\ProductsListQueryDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\JsonResponse;

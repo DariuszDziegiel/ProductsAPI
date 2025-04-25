@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Api\Interface\Controller\Product;
+namespace Api\Interface\Http\Controller\Product;
 
 use Api\Application\Exception\Product\ProductWithGivenIdNotExistsException;
 use Api\Application\UseCase\ProductGet\ProductGetQuery;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Api\Interface\RequestDTO;
+namespace Api\Interface\Http\RequestDTO;
 
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Count;

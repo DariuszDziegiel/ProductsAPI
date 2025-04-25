@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Api\Interface\Controller\Product;
+namespace Api\Interface\Http\Controller\Product;
 
 use Api\Application\Exception\Product\ProductWithGivenIdAlreadyExistsException;
 use Api\Application\UseCase\ProductAdd\ProductAddCommand;
-use Api\Interface\RequestDTO\ProductAddRequestDTO;
+use Api\Interface\Http\RequestDTO\ProductAddRequestDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
