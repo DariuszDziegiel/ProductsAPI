@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 #[AsEventListener('kernel.exception')]
 class ApiHttpExceptionListener
@@ -18,6 +19,16 @@ class ApiHttpExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $e = $event->getThrowable();
+
+        if ($e instanceof UnsupportedMediaTypeHttpException) {
+            $response = new JsonResponse([
+                'message' => 'Unsupported payload type. Allowed types: application/json'
+            ], Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
+            $response->headers->set('Accept-Post', 'application/json');
+            $event->setResponse($response);
+
+            return;
+        }
 
         if ($e instanceof UnprocessableEntityHttpException) {
             $event->setResponse(new JsonResponse([
