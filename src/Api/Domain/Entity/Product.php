@@ -43,7 +43,7 @@ class Product
         cascade: ['persist']
     )]
     #[JoinTable(name: 'product_category')]
-    #[Assert\Count(min: 8)]
+    #[Assert\Count(min: 1)]
     private Collection $categories;
 
     public function __construct(
@@ -61,18 +61,14 @@ class Product
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            //$category->addProduct($this);
         }
 
         return $this;
     }
 
-    public function removeCategory(Category $category): self
+    public function clearCategories(): self
     {
-        if ($this->categories->removeElement($category)) {
-            $category->removeProduct($this);
-        }
-
+        $this->categories->clear();
         return $this;
     }
 
@@ -86,9 +82,22 @@ class Product
         return $this->title;
     }
 
+    public function updateTitle(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+
     public function price(): Money
     {
         return $this->price;
+    }
+
+    public function updatePrice(Money $price): self
+    {
+        $this->price = $price;
+        return $this;
     }
 
     public function categoriesCodes(): array
