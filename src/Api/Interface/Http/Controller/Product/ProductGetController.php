@@ -30,7 +30,8 @@ class ProductGetController extends AbstractController
 
     #[Route(
         '/products/{id}',
-        methods: ['GET', 'HEAD']
+        requirements: ['id' => '[0-9a-fA-F\-]{36}'],
+        methods: ['GET', 'HEAD'],
     )]
     public function __invoke(string $id): JsonResponse
     {
