@@ -57,13 +57,15 @@ class ProductAddController extends AbstractController
 
     private function buildCreatedResponse(string $id): JsonResponse
     {
-        $response = new JsonResponse([
-            'message' => 'Product created successfully'
-        ], Response::HTTP_CREATED);
-
-        $response->headers->set('Location', "/api/products/{$id}");
-
-        return $response;
+        return new JsonResponse(
+            [
+                'message' => 'Product created successfully'
+            ],
+            Response::HTTP_CREATED,
+            [
+                'Location' => "/api/products/{$id}"
+            ]
+        );
     }
 
     private function buildValidationErrorResponse(ValidationFailedException $e): JsonResponse
