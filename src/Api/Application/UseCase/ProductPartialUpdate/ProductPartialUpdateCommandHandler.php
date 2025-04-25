@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Api\Application\UseCase\ProductPartialUpdate;
 
-use Api\Application\Exception\Product\ProductWithGivenIdAlreadyExistsException;
 use Api\Application\Exception\Product\ProductWithGivenIdNotExistsException;
-use Api\Application\UseCase\ProductAdd\ProductAddCommand;
 use Api\Domain\Entity\Category;
-use Api\Domain\Entity\Product;
 use Api\Domain\Event\ProductSavedEvent;
 use Api\Domain\Repository\CategoryRepositoryInterface;
 use Api\Domain\Repository\ProductRepositoryInterface;
