@@ -8,5 +8,5 @@ use Api\Application\Exception\ApplicationException;
 
 class ProductWithGivenIdAlreadyExistsException extends ApplicationException
 {
-
+    public $message = 'Product with given id already exists';
 }
