@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Api\Interface\Http\Controller\Product;
 
-use Api\Application\Exception\Product\ProductWithGivenIdNotExistsException;
 use Api\Application\UseCase\ProductDelete\ProductDeleteCommand;
 use Api\Interface\Http\Controller\Product\Trait\ProductDeleteExceptionsHandlingTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
