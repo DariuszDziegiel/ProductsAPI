@@ -11,11 +11,10 @@ use Doctrine\ORM\Mapping\Embeddable;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 
+//@TODO: add currency support and subtract method in next release
 #[Embeddable]
 class Money
 {
-    //@TODO: add currency support and subtract method in next release
-
     #[Column(
         name: 'price',
         type: 'decimal',
