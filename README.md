@@ -15,6 +15,8 @@ Awaria w module notyfikacji nie zatrzyma procesu dodawania produktu.
 
 
 Mail: Mailcatcher panel:  http://localhost:1080/
+Phpmyadmin: ....
+Dokumentacja: /api/doc
 File log: var/log/product.saved.event.log
 
 
