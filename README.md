@@ -24,3 +24,13 @@ Może plany na rozwój
 - filtrowanie danych przychodzących z payloadów API (XSS, SQL injection - Użycie HtmlPurifier lub innej biblioteki filtrującej)  
 - /api/products pagination
 - DepTrac testy architektury
+
+
+## Tech Stack
+
+**Framework:** Symfony 7.2.5
+**PHP:** PHP 8.4
+
+
+## Acknowledgements
+- [Problem n+1 w Doctrine](https://koddlo.pl/doctrine-problem-n1-i-mozliwe-rozwiazania/)
