@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 
-
 readonly class ProductReplaceRequestDTO
 {
     public function __construct(
