@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Api\Domain\Entity;
 
 use Api\Domain\Entity\Traits\TimestampableTrait;
+use Api\Domain\Exception\Product\ProductWithoutCategoriesException;
 use Api\Domain\ValueObject\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +16,8 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 use Doctrine\ORM\Mapping\Table;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -106,6 +109,15 @@ class Product
             fn($category) => $category->code(),
             $this->categories->toArray()
         );
+    }
+
+    #[PrePersist]
+    #[PreUpdate]
+    public function validateCategoryCount(): void
+    {
+        if (!$this->categories->count()) {
+            throw new ProductWithoutCategoriesException();
+        }
     }
 
 }
