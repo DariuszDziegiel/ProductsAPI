@@ -1,6 +1,6 @@
 api_controllers:
     resource:
-        path: ../src/Api/Interface/Controller/
-        namespace: Api\Interface\Controller
+        path: ../src/Api/Interface/Http/Controller/
+        namespace: Api\Interface\Http\Controller
     type: attribute
     prefix: '/api'
