@@ -7,12 +7,14 @@ namespace Api\Application\UseCase\ProductGet;
 use Api\Application\Exception\Product\ProductWithGivenIdNotExistsException;
 use Api\Application\UseCase\ProductGet\DTO\ProductGetDTO;
 use Api\Domain\Repository\ProductRepositoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler('query.bus')]
 class ProductGetQueryHandler
 {
     public function __construct(
+        #[Autowire(service: 'Api\Infrastructure\Persistence\Doctrine\DoctrineProductRepository')]
         private readonly ProductRepositoryInterface $productRepository
     ) {}
 

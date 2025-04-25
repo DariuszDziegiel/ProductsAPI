@@ -11,6 +11,7 @@ use Api\Domain\Event\ProductSavedEvent;
 use Api\Domain\Repository\CategoryRepositoryInterface;
 use Api\Domain\Repository\ProductRepositoryInterface;
 use Api\Domain\ValueObject\Money;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -20,7 +21,9 @@ use Symfony\Component\Uid\Uuid;
 class ProductAddCommandHandler
 {
     public function __construct(
+        #[Autowire(service: 'Api\Infrastructure\Persistence\Doctrine\DoctrineProductRepository')]
         private readonly ProductRepositoryInterface $productRepository,
+        #[Autowire(service: 'Api\Infrastructure\Persistence\Doctrine\DoctrineCategoryRepository')]
         private readonly CategoryRepositoryInterface $categoryRepository,
         #[Target('event.bus')]
         private readonly MessageBusInterface $eventBus

@@ -6,11 +6,13 @@ namespace Api\Application\UseCase\ProductDelete;
 
 use Api\Application\Exception\Product\ProductWithGivenIdNotExistsException;
 use Api\Domain\Repository\ProductRepositoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler('command.bus')]
 class ProductDeleteCommandHandler
 {
     public function __construct(
+        #[Autowire(service: 'Api\Infrastructure\Persistence\Doctrine\DoctrineProductRepository')]
         private readonly ProductRepositoryInterface $productRepository,
     ) {}
 
