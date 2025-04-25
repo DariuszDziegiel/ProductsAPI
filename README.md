@@ -21,3 +21,4 @@ File log: var/log/product.saved.event.log
 Może plany na rozwój
 - filtrowanie danych przychodzących z payloadów API (XSS, SQL injection - Użycie HtmlPurifier lub innej biblioteki filtrującej)  
 - /api/products pagination
+- DepTrac testy architektury
