@@ -22,7 +22,8 @@ class ProductDeleteController extends AbstractController
 
     #[Route(
         '/products/{id}',
-        methods: ['DELETE']
+        requirements: ['id' => '[0-9a-fA-F\-]{36}'],
+        methods: ['DELETE'],
     )]
     public function __invoke(string $id): Response
     {
