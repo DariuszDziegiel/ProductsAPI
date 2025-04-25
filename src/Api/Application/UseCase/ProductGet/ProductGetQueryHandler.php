@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Api\Application\UseCase\ProductGet;
 
 use Api\Application\Exception\Product\ProductWithGivenIdAlreadyExistsException;
+use Api\Application\Exception\Product\ProductWithGivenIdNotExistsException;
 use Api\Domain\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -18,7 +19,7 @@ class ProductGetQueryHandler
     public function __invoke(ProductGetQuery $productGetQuery)
     {
         if (!$this->productRepository->findById($productGetQuery->id)) {
-            throw new ProductWithGivenIdAlreadyExistsException();
+            throw new ProductWithGivenIdNotExistsException();
         }
 
         // TODO: Implement __invoke() method.
