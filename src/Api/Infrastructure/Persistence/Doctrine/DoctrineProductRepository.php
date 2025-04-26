@@ -8,6 +8,7 @@ use Api\Domain\Entity\Category;
 use Api\Domain\Entity\Product;
 use Api\Domain\Repository\ProductRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 readonly class DoctrineProductRepository implements ProductRepositoryInterface
 {
@@ -32,17 +33,28 @@ readonly class DoctrineProductRepository implements ProductRepositoryInterface
         $this->entityManager->flush();
     }
 
-    public function findAll(int $limit = 25, int $page = 0): array
+    public function findAll(int $limit, int $page): array
     {
-        //@TODO: implement pagination for performance
-        return $this->entityManager
+        $page = max($page, 1);
+        $limit = max($limit, 1);
+        $offset = $limit * ($page - 1);
+
+        $query = $this->entityManager
             ->createQueryBuilder()
             ->select('p, c')
             ->from(Product::class, 'p')
             ->leftJoin('p.categories', 'c')
-            ->getQuery()
-            ->getResult()
-            ;
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        $paginator = new Paginator($query, true);
+
+        foreach ($paginator as $product) {
+            $results[] = $product;
+        }
+
+        return $results;
     }
 
 }

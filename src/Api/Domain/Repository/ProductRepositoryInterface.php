@@ -12,5 +12,5 @@ interface ProductRepositoryInterface
     public function findById(string $id): ?Product;
     public function remove(Product $product): void;
     /** @return Product[] */
-    public function findAll(int $limit = 25, int $page = 0): array;
+    public function findAll(int $limit, int $page): array;
 }

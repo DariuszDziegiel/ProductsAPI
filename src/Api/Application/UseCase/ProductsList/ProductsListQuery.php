@@ -11,8 +11,7 @@ use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 class ProductsListQuery
 {
     public function __construct(
-        #[LessThanOrEqual(500)]
-        public int $limit,
-        public int $page
+        public ?int $limit = 100,
+        public ?int $page = 1
     ) {}
 }

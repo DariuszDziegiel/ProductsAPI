@@ -8,6 +8,8 @@ use Api\Application\UseCase\ProductGet\DTO\ProductGetDTO;
 use Api\Application\UseCase\ProductGet\ProductGetQuery;
 use Api\Interface\Http\Controller\Product\Trait\ProductGetExceptionsHandlingTrait;
 use Api\Interface\Http\Controller\Product\Trait\ValidationErrorHandlingTrait;
+use Nelmio\ApiDocBundle\Model\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\JsonResponse;
