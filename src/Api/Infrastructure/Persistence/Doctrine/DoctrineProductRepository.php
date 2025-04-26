@@ -50,11 +50,11 @@ readonly class DoctrineProductRepository implements ProductRepositoryInterface
 
         $paginator = new Paginator($query, true);
 
+        $results = [];
         foreach ($paginator as $product) {
             $results[] = $product;
         }
 
         return $results;
     }
-
 }
