@@ -19,6 +19,8 @@ Phpmyadmin: ....
 Dokumentacja: /api/doc
 File log: var/log/product.saved.event.log
 
+Jak dodać nową notyfikacje
+
 
 Może plany na rozwój
 - filtrowanie danych przychodzących z payloadów API (XSS, SQL injection - Użycie HtmlPurifier lub innej biblioteki filtrującej)
