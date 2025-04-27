@@ -6,13 +6,13 @@ SYMFONY := $(DC_EXEC) php -d memory_limit=-1 bin/console
 default: start
 
 start:
-	docker compose up -d
+	$(DC) up -d
 
 stop:
-	docker compose stop
+	$(DC) stop
 
 remove:
-	docker compose down -v
+	$(DC) down -v
 
 test:
 	$(PHPUNIT) $(RUN_ARGS)
