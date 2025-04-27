@@ -93,7 +93,7 @@ readonly class ProductSavedSMSNotifier implements ProductSavedNotifierInterface
 - Filtrowanie danych przychodzących z payloadów użytkowników (Przeciwdziałanie atakom XSS, SQL injection - użycie np. Html Purifier lub innej biblioteki filtrującej). Ważne z punktu widzenia security
 - Autoryzacja do API
 - Rate limiting dla wywołań API 
-- Audyt zmian - rejestrowanie wszystkich komend wpływających na zmianę stanu systemu - podpięcie nasłuchującego middleware pod command.bus i obsługiwanych komend
+- Audyt zmian - rejestrowanie wszystkich komend wpływających na zmianę stanu systemu - podpięcie nasłuchującego middleware pod command.bus
 
 ## Tech Stack
 - Symfony 7.2.5
