@@ -13,9 +13,12 @@ services:
     ports:
       - '80:80'
     depends_on:
-      - mysql
-      - rabbitmq
-      - mailcatcher
+      rabbitmq:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_healthy
 
   mysql:
     platform: linux/amd64
@@ -31,6 +34,11 @@ services:
       TZ: Europe/Warsaw
     volumes:
       - mysql_data:/var/lib/mysql:rw
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mailcatcher:
     platform: linux/amd64
@@ -39,6 +47,11 @@ services:
       - 1080:1080
     environment:
       TZ: Europe/Warsaw
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "-q", "http://127.0.0.1:1080" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   rabbitmq:
     platform: linux/amd64
@@ -56,6 +69,11 @@ services:
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: rabbitmq
       RABBITMQ_DEFAULT_VHOST: /
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   products-api:
