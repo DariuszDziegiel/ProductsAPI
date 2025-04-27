@@ -34,8 +34,6 @@ Lub bezpośrednio w pliku yaml (standar OpenAPI 3):
 config/packages/nelmio_api_doc.yaml
 ````
 
-
-
 ## Uruchomienie testów PHPUnit
 
 Aby uruchomić testy wykonaj:
@@ -49,11 +47,11 @@ Lub jeśli nie masz narzędzia make:
 docker compose exec -it apache vendor/bin/phpunit --colors=always --testdox 
 ````
 
-Notyfikacje zostały przetestowane zarówno w testach jednostkowych, jak i integracyjnych.
+Notyfikacje przetestowane zostały jednostkowo i integracyjnie.
 
 ## Notyfikacje
 
-**Panel Mailcatcher do podglądu wysłanych emaili po zapisie produktu:** http://localhost:1080
+**Panel Mailcatcher do podglądu przechwyconych emaili z notyfikacjami po zapisie produktu:** http://localhost:1080
 
 **Plik log z notyfikacjami po zapisie produktu:** var/log/product.saved.event.log
 
@@ -94,9 +92,8 @@ readonly class ProductSavedSMSNotifier implements ProductSavedNotifierInterface
 - **[gotowe]** API do zarządzania produktami i powiązanymi kategoriami
 - Filtrowanie danych przychodzących z payloadów użytkowników (Przeciwdziałanie atakom XSS, SQL injection - użycie np. Html Purifier lub innej biblioteki filtrującej). Ważne z punktu widzenia security
 - Autoryzacja do API
-- Testy architektury w Deptrac
-- Rate limiting dla wywołań API
-- Rejestrowanie wszystkich zmian w- podpięcie middleware pod command.bus i obsługiwanych komend
+- Rate limiting dla wywołań API 
+- Audyt zmian - rejestrowanie wszystkich komend wpływających na zmianę stanu systemu - podpięcie nasłuchującego middleware pod command.bus i obsługiwanych komend
 
 ## Tech Stack
 - Symfony 7.2.5
