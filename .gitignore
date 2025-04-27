@@ -16,7 +16,7 @@
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
-.phpunit.result.cache
-.phpunit.cache
+/.phpunit.result.cache
+/.phpunit.cache
 ###< phpunit/phpunit ###
 

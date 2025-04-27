@@ -1,0 +1,14 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: ProductsAPI
+            description: Simple API for products management
+            version: 1.0.0
+        servers:
+            - url: http://localhost
+              description: API over HTTP
+
+
+    areas: # to filter documented areas
+        path_patterns:
+            - ^!/api(?!/doc$)
