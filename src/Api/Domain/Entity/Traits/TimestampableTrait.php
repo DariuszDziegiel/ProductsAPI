@@ -27,15 +27,14 @@ trait TimestampableTrait
     }
 
     #[PrePersist]
-    public function setCreatedAt()
+    public function setCreatedAt(): void
     {
         $this->createdAt = new \DateTimeImmutable();
     }
 
     #[PreUpdate]
-    public function setUpdatedAt()
+    public function setUpdatedAt(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
     }
-
 }

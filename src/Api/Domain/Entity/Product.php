@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Api\Domain\Entity;
 
 use Api\Domain\Entity\Traits\TimestampableTrait;
+use Api\Domain\Exception\Product\ProductWithoutCategoriesException;
 use Api\Domain\ValueObject\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +16,8 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 use Doctrine\ORM\Mapping\Table;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -43,7 +46,7 @@ class Product
         cascade: ['persist']
     )]
     #[JoinTable(name: 'product_category')]
-    #[Assert\Count(min: 8)]
+    #[Assert\Count(min: 1)]
     private Collection $categories;
 
     public function __construct(
@@ -61,18 +64,14 @@ class Product
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            //$category->addProduct($this);
         }
 
         return $this;
     }
 
-    public function removeCategory(Category $category): self
+    public function clearCategories(): self
     {
-        if ($this->categories->removeElement($category)) {
-            $category->removeProduct($this);
-        }
-
+        $this->categories->clear();
         return $this;
     }
 
@@ -86,8 +85,37 @@ class Product
         return $this->title;
     }
 
+    public function updateTitle(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
     public function price(): Money
     {
         return $this->price;
+    }
+
+    public function updatePrice(Money $price): self
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    public function categoriesCodes(): array
+    {
+        return array_map(
+            fn($category) => $category->code(),
+            $this->categories->toArray()
+        );
+    }
+
+    #[PrePersist]
+    #[PreUpdate]
+    public function validateCategoryCount(): void
+    {
+        if (!$this->categories->count()) {
+            throw new ProductWithoutCategoriesException();
+        }
     }
 }

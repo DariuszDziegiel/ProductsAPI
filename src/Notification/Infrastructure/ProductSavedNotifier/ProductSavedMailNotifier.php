@@ -21,10 +21,12 @@ readonly class ProductSavedMailNotifier implements ProductSavedNotifierInterface
     public function notify(ProductSavedEvent $productSavedEvent): void
     {
         $product = $productSavedEvent->product;
+
         $productDateUpdate = $product->updatedAt()
             ? $product->updatedAt()->format('Y-m-d H:i:s')
             : '---'
         ;
+        $productCategoriesCodes = implode(', ', $product->categoriesCodes());
 
         $email = new Email()
             ->to('noreply@productsapi.local')
@@ -34,6 +36,7 @@ readonly class ProductSavedMailNotifier implements ProductSavedNotifierInterface
                 id : {$product->id()} <br />
                 title: {$product->title()} <br />
                 price: {$product->price()->value()} <br />
+                categories: [{$productCategoriesCodes}] <br />
                 date creation: {$product->createdAt()->format('Y-m-d H:i:s')} <br />
                 date update: {$productDateUpdate} <br />
             ");

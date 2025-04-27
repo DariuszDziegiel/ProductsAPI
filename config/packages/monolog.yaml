@@ -34,6 +34,8 @@ when@dev:
 when@test:
     monolog:
         handlers:
+            product.saved.event:
+                path: '%kernel.logs_dir%/test.product.saved.event.log'
             main:
                 type: fingers_crossed
                 action_level: error
