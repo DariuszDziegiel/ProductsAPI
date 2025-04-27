@@ -40,7 +40,7 @@ class ProductDeleteController extends AbstractController
             return $this->handleHandlerFailedException($e);
         } catch (\Throwable $e) {
             return $this->json([
-                'message' => 'Unexpected error:' . $e->getMessage()
+                'message' => 'Unexpected error - we will fix it as soon as possible - please try again later'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
