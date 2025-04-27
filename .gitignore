@@ -19,5 +19,3 @@
 .phpunit.result.cache
 .phpunit.cache
 ###< phpunit/phpunit ###
-
-/.phpunit.cache/
