@@ -4,8 +4,6 @@ services:
       dockerfile: docker/dockerfile-apache
     environment:
       TZ: Europe/Warsaw
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
     volumes:
       - ./:/var/www/products-api.local
       - ./docker/apache/vhost:/etc/apache2/sites-enabled
